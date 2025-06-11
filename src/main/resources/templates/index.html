@@ -221,93 +221,75 @@
         </div>
     </header>
 
-    <!-- SERVICIOS -->
-    <section id="servicios" class="container my-5">
-        <h2 class="text-center mb-4">Trabajos que Realizamos</h2>
-        <div class="row text-center">
-            <div class="col-md-4 mb-3">
-                <div class="card p-3 h-100">
-                    <div class="service-icon mb-2">🔧</div>
-                    <h5>Cambio de aceite</h5>
-                    <p>Cambio completo de aceite, filtros y revisión de motor.</p>
-                </div>
-            </div>
-            <div class="col-md-4 mb-3">
-                <div class="card p-3 h-100">
-                    <div class="service-icon mb-2">🛞</div>
-                    <h5>Revisión de frenos</h5>
-                    <p>Inspección y reparación del sistema de frenos y suspensión.</p>
-                </div>
-            </div>
-            <div class="col-md-4 mb-3">
-                <div class="card p-3 h-100">
-                    <div class="service-icon mb-2">🧰</div>
-                    <h5>Mantenimiento preventivo</h5>
-                    <p>Plan de revisiones periódicas para mantener tu camión en óptimas condiciones.</p>
+    <!-- SERVICIOS Y LOS VIDEOS-->
+ 
+<section id="galeria" class="container my-5">
+    <h2 class="text-center mb-4">Galería del Taller</h2>
+    <div class="row">
+        <!-- Cambio de aceite -->
+        <div class="col-md-3">
+            <div class="image-card" onclick="mostrarVideo('r-RswsOa8RM')">
+                <img src="/imagenes/cambioAceite.png" alt="Cambio de aceite">
+                <div class="overlay">
+                    <p>Equipo realizando cambio completo de aceite y filtros.</p>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- GALERÍA con imágenes clicables -->
-    <section id="galeria" class="container my-5">
-        <h2 class="text-center mb-4">Galería del Taller</h2>
-        <div class="row">
-            <div class="col-md-3">
-                <div class="image-card" onclick="mostrarVideo()">
-                    <img src="/imagenes/cambioAceite.png" alt="Cambio de aceite">
-                    <div class="overlay">
-                        <p>Equipo realizando cambio completo de aceite y filtros.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="image-card" onclick="mostrarVideo()">
-                    <img src="/imagenes/cambioNeumaticos.png" alt="Cambio de neumáticos">
-                    <div class="overlay">
-                        <p>Reemplazo y balanceo de neumáticos por personal especializado.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="image-card" onclick="mostrarVideo()">
-                    <img src="/imagenes/cambioPiezas.png" alt="Sustitución de piezas">
-                    <div class="overlay">
-                        <p>Instalación de piezas nuevas tras diagnóstico detallado.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="image-card" onclick="mostrarVideo()">
-                    <img src="/imagenes/cambioFrenos.png" alt="Cambio de sistema de frenos">
-                    <div class="overlay">
-                        <p>Reemplazo y ajuste completo del sistema de frenos para máxima seguridad.</p>
-                    </div>
+        <!-- Cambio de neumáticos -->
+        <div class="col-md-3">
+            <div class="image-card" onclick="mostrarVideo('B5COkuPtQMc')">
+                <img src="/imagenes/cambioNeumaticos.png" alt="Cambio de neumáticos">
+                <div class="overlay">
+                    <p>Reemplazo y balanceo de neumáticos por personal especializado.</p>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- VIDEO MODAL -->
-    <div class="video-galeria" id="videoModal">
-        <span class="close-btn" onclick="cerrarVideo()">&times;</span>
-        <iframe id="videoIframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <!-- Sustitución de piezas -->
+        <div class="col-md-3">
+            <div class="image-card" onclick="mostrarVideo('awvyEzfQUWs')">
+                <img src="/imagenes/cambioPiezas.png" alt="Sustitución de piezas">
+                <div class="overlay">
+                    <p>Instalación de piezas nuevas tras diagnóstico detallado.</p>
+                </div>
+            </div>
+        </div>
+        <!-- Cambio de frenos -->
+        <div class="col-md-3">
+            <div class="image-card" onclick="mostrarVideo('NBupOOCykIg')">
+                <img src="/imagenes/cambioFrenos.png" alt="Cambio de sistema de frenos">
+                <div class="overlay">
+                    <p>Reemplazo y ajuste completo del sistema de frenos para máxima seguridad.</p>
+                </div>
+            </div>
+        </div>
     </div>
+</section>
 
-    <script>
-        function mostrarVideo() {
-            const modal = document.getElementById('videoModal');
-            const iframe = document.getElementById('videoIframe');
-            iframe.src = 'https://www.youtube.com/embed/YOUTUBE_VIDEO_ID?autoplay=1&mute=1';
-            modal.style.display = 'flex';
-        }
+<!-- MODAL DE VÍDEO -->
+<div class="video-galeria" id="videoModal">
+    <span class="close-btn" onclick="cerrarVideo()">&times;</span>
+    <iframe id="videoIframe" src="" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+               gyroscope; picture-in-picture; web-share"
+        allowfullscreen></iframe>
+</div>
 
-        function cerrarVideo() {
-            const modal = document.getElementById('videoModal');
-            const iframe = document.getElementById('videoIframe');
-            iframe.src = '';
-            modal.style.display = 'none';
-        }
-    </script>
+<script>
+function mostrarVideo(videoId) {
+    const modal = document.getElementById('videoModal');
+    const iframe = document.getElementById('videoIframe');
+    iframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&mute=1';
+    modal.style.display = 'flex';
+}
+
+function cerrarVideo() {
+    const modal = document.getElementById('videoModal');
+    const iframe = document.getElementById('videoIframe');
+    iframe.src = '';
+    modal.style.display = 'none';
+}
+</script>
+
 
 
     <!-- EQUIPO -->
@@ -444,10 +426,10 @@ document.getElementById('contactoForm').addEventListener('submit', function (e) 
       </div>
     </div>
 
-    <!-- Línea de separación -->
+    
     <hr class="bg-light my-3">
 
-    <!-- Copyright centrado -->
+    <!-- Copyright colocado en el centrado -->
     <div class="row">
       <div class="col text-center">
         <p class="mb-0">&copy; 2025 Taller de Camiones Cojali. Todos los derechos reservados.</p>
