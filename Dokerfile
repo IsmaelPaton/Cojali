@@ -1,16 +1,16 @@
-FROM Maven:3.8.5-openjdk-17 AS build
+FROM maven:3.8.5-openjdk-17 AS build
 
-COPY . .
 WORKDIR /app
+COPY . .
 
-RUN mvn clean clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-COPY --from=build/app/target/*.jar app.jar
+COPY --from=build /app/target/*.jar app.jar
 
 ENV PORT 8080
 
-CMD ["java", "-jar","app.jar"]
+CMD ["java", "-jar", "app.jar"]
