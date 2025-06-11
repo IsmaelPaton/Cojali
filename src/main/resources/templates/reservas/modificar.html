@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modificar Reserva</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        option.rojo {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="text-center">Modificar Reserva</h2>
+
+    <form th:action="@{/reservas/modificar/{id}(id=${reserva.id})}" method="post" th:object="${reserva}" class="mt-4">
+        <div class="form-group">
+            <label for="fecha">Fecha</label>
+            <input type="date" class="form-control" th:field="*{fecha}" id="fecha" required>
+        </div>
+
+        <div class="form-group">
+            <label for="hora">Hora</label>
+            <select class="form-control" th:field="*{hora}" id="hora" required>
+                <option value="">-- Selecciona una hora --</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="servicio">Servicio</label>
+            <select class="form-control" th:field="*{servicio}" required>
+                <option value="">-- Selecciona un servicio --</option>
+                <option value="Cambio de aceite">Cambio de aceite</option>
+                <option value="Cambio de neumáticos">Cambio de neumáticos</option>
+                <option value="Reparación de motor">Reparación de motor</option>
+                <option value="Cambio de sistema de frenos">Cambio de sistema de frenos</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-success">Guardar cambios</button>
+    </form>
+
+    <div th:if="${mensaje}" class="alert alert-success mt-3" th:text="${mensaje}"></div>
+    <div th:if="${error}" class="alert alert-danger mt-3" th:text="${error}"></div>
+</div>
+
+<div class="mt-4 text-center">
+    <a href="/reservas/mis-reservas" class="btn btn-secondary">Volver a mis reservas</a>
+</div>
+
+<!-- Script -->
+<script>
+    const hoy = new Date().toISOString().split("T")[0];
+    const inputFecha = document.getElementById("fecha");
+    const selectHora = document.getElementById("hora");
+
+    inputFecha.setAttribute("min", hoy);
+
+    let reservas = [];
+
+    fetch('/reservas/api/reservas')
+        .then(res => res.json())
+        .then(data => {
+            reservas = data;
+            bloquearFechas();
+        });
+
+    function bloquearFechas() {
+        const fechasOcupadas = {};
+
+        reservas.forEach(r => {
+            if (!fechasOcupadas[r.fecha]) {
+                fechasOcupadas[r.fecha] = [];
+            }
+            fechasOcupadas[r.fecha].push(r.hora);
+        });
+
+        inputFecha.addEventListener("change", function () {
+            const fecha = this.value;
+            const horasOcupadas = fechasOcupadas[fecha] || [];
+
+            if (horasOcupadas.length >= 5) {
+                this.value = "";
+                this.classList.add("is-invalid");
+                selectHora.innerHTML = '<option value="">-- Día completo --</option>';
+                selectHora.disabled = true;
+                return;
+            }
+
+            this.classList.remove("is-invalid");
+            selectHora.disabled = false;
+
+            const horasDisponibles = [
+                "08:30", "09:30", "10:30", "11:30", "12:30", "13:30",
+                "16:00", "17:00", "18:00", "19:00", "20:00"
+            ];
+
+            selectHora.innerHTML = '<option value="">-- Selecciona una hora --</option>';
+
+            horasDisponibles.forEach(hora => {
+                const option = document.createElement("option");
+                option.value = hora;
+                option.textContent = hora;
+
+                if (horasOcupadas.includes(hora)) {
+                    option.disabled = true;
+                    option.classList.add("rojo");
+                    option.textContent += " (reservada)";
+                }
+
+                selectHora.appendChild(option);
+            });
+        });
+
+        // Si la fecha ya está preseleccionada (al editar), lanzar el evento
+        if (inputFecha.value) {
+            const evento = new Event("change");
+            inputFecha.dispatchEvent(evento);
+        }
+    }
+</script>
+</body>
+</html>

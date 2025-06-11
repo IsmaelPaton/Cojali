@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Empleado</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Login Empleado</h2>
+    <form th:action="@{/empleados/login}" method="post" class="w-50 mx-auto p-4 bg-white shadow rounded">
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" name="contraseña" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
+        <p class="text-danger mt-3 text-center" th:if="${error}">Credenciales incorrectas</p>
+    </form>
+</div>
+</body>
+</html>

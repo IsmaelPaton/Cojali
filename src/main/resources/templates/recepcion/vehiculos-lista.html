@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Vehículos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <h2 class="mb-4">🚗 Lista de Vehículos</h2>
+
+    <!-- Mostrar mensaje de éxito o error -->
+    <div th:if="${exito}" class="alert alert-success text-center" th:text="${exito}"></div>
+    <div th:if="${error}" class="alert alert-danger text-center" th:text="${error}"></div>
+
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Matrícula</th>
+            <th>Año</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="vehiculo : ${vehiculos}">
+            <td th:text="${vehiculo.id}"></td>
+            <td th:text="${vehiculo.cliente.nombre + ' ' + vehiculo.cliente.apellido}"></td>
+            <td th:text="${vehiculo.marca}"></td>
+            <td th:text="${vehiculo.modelo}"></td>
+            <td th:text="${vehiculo.matricula}"></td>
+            <td th:text="${vehiculo.anio}"></td>
+            <td>
+                <a th:href="@{'/recepcion/editar-vehiculo/' + ${vehiculo.id}}" class="btn btn-warning btn-sm">✏️ Editar</a>
+                <form th:action="@{/recepcion/eliminar-vehiculo}" method="post" style="display:inline;">
+                    <input type="hidden" name="id" th:value="${vehiculo.id}" />
+                    <button type="submit" class="btn btn-danger btn-sm">🗑 Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/recepcion/inicio}" class="btn btn-secondary">⬅ Volver al panel</a>
+</div>
+</body>
+</html>

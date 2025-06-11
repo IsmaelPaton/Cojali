@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Órdenes de Trabajo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <h2 class="mb-4">🛠 Órdenes de Trabajo</h2>
+
+    <!-- Mensajes de éxito o error -->
+    <div th:if="${exito}" class="alert alert-success text-center" th:text="${exito}"></div>
+    <div th:if="${error}" class="alert alert-danger text-center" th:text="${error}"></div>
+
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Vehículo</th>
+            <th>Descripción</th>
+            <th>Fecha Ingreso</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="orden : ${ordenes}">
+            <td th:text="${orden.id}"></td>
+            <td th:text="${orden.vehiculo.matricula}"></td>
+            <td th:text="${orden.descripcion}"></td>
+            <td th:text="${orden.fechaIngreso}"></td>
+            <td th:text="${orden.estado}"></td>
+            <td>
+                <!-- Eliminar sin confirm() -->
+                <form th:action="@{/recepcion/eliminar-orden}" method="post" style="display: inline;">
+                    <input type="hidden" name="id" th:value="${orden.id}" />
+                    <button type="submit" class="btn btn-danger btn-sm">🗑 Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/recepcion/inicio}" class="btn btn-secondary">⬅ Volver</a>
+</div>
+</body>
+</html>

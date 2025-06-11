@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Zona Cliente - Taller Cojali</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/estilos.css">
+    <style>
+        body { background-color: #f5f5f5; }
+        .card { box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: none; }
+        .btn-lg { font-size: 1.2rem; padding: 0.75rem 1.5rem; }
+        .seccion { margin-bottom: 2rem; }
+        .titulo-seccion { margin-bottom: 1rem; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 th:text="'Bienvenido, ' + ${cliente.nombre} + ' ' + ${cliente.apellido}"></h2>
+        <form th:action="@{/logout}" method="post">
+    <button type="submit" class="btn btn-danger">Cerrar sesión</button>
+</form>
+
+    </div>
+
+    <!-- Sección de botones de acceso -->
+    <div class="row">
+        <div class="col-md-4 seccion">
+            <div class="card p-4 text-center">
+                <h5 class="titulo-seccion">Mis Reservas</h5>
+                <a href="/reservas/mis-reservas" class="btn btn-primary btn-lg">Ver mis reservas</a>
+            </div>
+        </div>
+        <div class="col-md-4 seccion">
+            <div class="card p-4 text-center">
+                <h5 class="titulo-seccion">Mis Facturas</h5>
+                <a href="/clientes/facturas" class="btn btn-secondary btn-lg">Ver facturas</a>
+            </div>
+        </div>
+        <div class="col-md-4 seccion">
+            <div class="card p-4 text-center">
+                <h5 class="titulo-seccion">Modificar Perfil</h5>
+                <a href="/clientes/perfil" class="btn btn-info btn-lg">Editar datos</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Segunda fila -->
+    <div class="row">
+        <div class="col-md-4 seccion">
+            <div class="card p-4 text-center">
+                <h5 class="titulo-seccion">Valorar Servicio</h5>
+                <a href="/valoraciones/nueva" class="btn btn-success btn-lg">Enviar opinión</a>
+            </div>
+        </div>       
+    </div>
+</div>
+
+<!-- Chatbot flotante (se mantiene) -->
+<div id="chatbot" style="position: fixed; bottom: 20px; right: 20px; width: 300px;">
+    <div id="chat-header" style="background-color: #007bff; color: white; padding: 10px; cursor: pointer;">
+        Chat del Taller
+    </div>
+    <div id="chat-body" style="display: none; border: 1px solid #ccc; height: 350px; background: white; overflow-y: auto; padding: 10px;">
+        <div id="chat-messages" style="height: 270px; overflow-y: auto;">
+            <div><strong>ChatBotCojali:</strong> ¡Hola! Soy el asistente del taller.<br>
+                Puedes preguntarme sobre: 
+                <ul>
+                    <li>Horario</li>
+                    <li>Servicios</li>
+                    <li>Teléfono</li>
+                    <li>Correo</li>
+                    <li>Dirección</li>
+                </ul>
+            </div>
+        </div>
+        <input type="text" id="chat-input" class="form-control mt-2" placeholder="Escribe tu pregunta...">
+    </div>
+</div>
+
+<script>
+    const respuestas = {
+        "horario": "Nuestro horario es de lunes a viernes de 8:00 a 18:00.",
+        "servicios": "Ofrecemos: mecánica general, revisión de frenos, cambio de aceite, diagnosis y más.",
+        "telefono": "Nuestro teléfono es +34 635 587 678.",
+        "correo": "Puedes escribirnos a info@cojali.com.",
+        "email": "Puedes escribirnos a info@cojali.com.",
+        "dirección": "Estamos en Avenida de la Industria 1, Campo de Criptana, España.",
+        "ubicacion": "Nuestra dirección es Avenida de la Industria 1, Campo de Criptana."
+    };
+
+    document.getElementById("chat-header").onclick = function () {
+        const body = document.getElementById("chat-body");
+        body.style.display = body.style.display === "none" ? "block" : "none";
+    };
+
+    document.getElementById("chat-input").addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && e.target.value.trim() !== "") {
+            const input = e.target.value.toLowerCase().trim();
+            const chat = document.getElementById("chat-messages");
+
+            chat.innerHTML += `<div><strong>Tú:</strong> ${input}</div>`;
+
+            let respuesta = "No he entendido tu pregunta. Puedes escribirme sobre: horario, servicios, teléfono, correo o dirección.";
+
+            for (let clave in respuestas) {
+                if (input.includes(clave)) {
+                    respuesta = respuestas[clave];
+                    break;
+                }
+            }
+
+            chat.innerHTML += `<div><strong>Bot:</strong> ${respuesta}</div>`;
+            chat.scrollTop = chat.scrollHeight;
+            e.target.value = "";
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Taller Cojali</title>
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Tu CSS personalizado -->
+    <link rel="stylesheet" href="/css/estilos.css">
+    <style>
+        body { background-color: #f8f9fa; }
+
+        /*  PRELOADER  */
+        #preloader {
+            background: linear-gradient(-45deg, #0e1a25, #1f2c3a, #0e1a25, #1a293a);
+            background-size: 400% 400%;
+            animation: gradientBG 6s ease infinite;
+            color: #e0e0e0;
+            height: 100vh; width: 100vw;
+            position: fixed; top: 0; left: 0;
+            z-index: 9999;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            font-family: 'Segoe UI', sans-serif;
+            text-align: center;
+            transition: opacity 0.5s ease;
+        }
+        @keyframes gradientBG {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .gif-container img {
+            max-width: 400px; width: 90%;
+            border-radius: 12px; margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.4);
+        }
+        .escribiendo {
+            font-size: 1.7rem; font-weight: bold;
+            white-space: nowrap; overflow: hidden;
+            border-right: .15em solid #e0e0e0;
+            animation: typing 2s steps(25,end), blink .75s step-end infinite;
+        }
+        @keyframes typing { from { width: 0 } to { width: 20ch } }
+        @keyframes blink  { from,to { border-color: transparent } 50% { border-color: #e0e0e0 } }
+        .puntos::after {
+            content: '';
+            animation: puntos 1.5s infinite steps(3,end);
+        }
+        @keyframes puntos {
+            0%   { content: ''; }
+            33%  { content: '.'; }
+            66%  { content: '..'; }
+            100% { content: '...'; }
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: url('/imagenes/fondoIndex.png') no-repeat center center;
+            background-size: cover; height: 450px;
+            position: relative; color: #fff;
+        }
+        .header-overlay {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+        .header-content {
+            position: relative; z-index: 2; height: 100%;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            text-align: center;
+        }
+        .header-content h1 {
+            font-size: 3.5rem; text-shadow: 2px 2px 4px #000;
+        }
+        .header-content p {
+            font-size: 1.5rem; margin-bottom: 30px;
+        }
+
+        /*  SERVICIOS  */
+        .service-icon { font-size: 2rem; color: #007bff; }
+
+        /*  GALERÍA & EQUIPO  */
+        .image-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            margin-bottom: 1rem;
+        }
+        .image-card img {
+            display: block;
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+        .image-card:hover img {
+            transform: scale(1.05);
+        }
+        .image-card .overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .image-card:hover .overlay {
+            opacity: 1;
+        }
+        .image-card .overlay p {
+            font-size: 1rem;
+            line-height: 1.4;
+            margin: 0;
+        }
+         .video-galeria {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1050;
+        }
+        .video-galeria iframe {
+            width: 80%;
+            height: 80%;
+        }
+        .video-galeria .close-btn {
+            position: absolute;
+            top: 20px; right: 30px;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+        }
+        .image-card {
+            cursor: pointer;
+        }
+
+        /* CONTACTO */
+        #contact { background: #fff; padding: 2rem 0; }
+        
+        /* Navbar links más grandes */
+        .navbar-nav .nav-link {
+	     font-size: 1.25rem; 
+	     margin: 0 2rem;
+         }
+         
+         html {
+        scroll-behavior: smooth;
+         }
+         
+         #servicios,
+         #galeria,
+         #equipo,
+         #contact {
+                   scroll-margin-top: 90px; /* ajustarlo al alto del navbar */
+                   }
+    </style>
+</head>
+<body>
+
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <div class="gif-container">
+            <img src="/imagenes/preloader.gif" alt="Cargando..." />
+            <p class="escribiendo">Reparando camiones<span class="puntos"></span></p>
+        </div>
+    </div>
+
+   
+        <!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <a class="navbar-brand" href="#" id="logo-scroll-top">
+    <img src="/imagenes/logo.png" alt="Logo Taller Cojali" height="100">
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse"
+          data-target="#navbarNav" aria-controls="navbarNav"
+          aria-expanded="false" aria-label="Alternar navegación">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <!-- Menú centrado -->
+    <ul class="navbar-nav mx-auto">
+      <li class="nav-item mx-3"><a class="nav-link" href="#servicios">Servicios</a></li>
+      <li class="nav-item mx-3"><a class="nav-link" href="#galeria">Galería</a></li>
+      <li class="nav-item mx-3"><a class="nav-link" href="#equipo">Equipo</a></li>
+      <li class="nav-item mx-3"><a class="nav-link" href="#contacto">Contacto</a></li>
+    </ul>
+    <!-- registro a la derecha -->
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item mx-3">
+        <a class="nav-link" th:href="@{clientes/registro}">Registrarse</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-overlay"></div>
+        <div class="container header-content">
+            <h1>Taller Cojali</h1>
+            <p>Expertos en mantenimiento y reparación de camiones</p>
+            <div class="d-flex flex-wrap justify-content-center">
+                <a class="btn btn-primary btn-lg m-2" th:href="@{/login}">Acceso Cliente</a>
+				<a class="btn btn-secondary btn-lg m-2" th:href="@{/empleados/login}">Acceso Empleado</a>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- SERVICIOS -->
+    <section id="servicios" class="container my-5">
+        <h2 class="text-center mb-4">Trabajos que Realizamos</h2>
+        <div class="row text-center">
+            <div class="col-md-4 mb-3">
+                <div class="card p-3 h-100">
+                    <div class="service-icon mb-2">🔧</div>
+                    <h5>Cambio de aceite</h5>
+                    <p>Cambio completo de aceite, filtros y revisión de motor.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card p-3 h-100">
+                    <div class="service-icon mb-2">🛞</div>
+                    <h5>Revisión de frenos</h5>
+                    <p>Inspección y reparación del sistema de frenos y suspensión.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card p-3 h-100">
+                    <div class="service-icon mb-2">🧰</div>
+                    <h5>Mantenimiento preventivo</h5>
+                    <p>Plan de revisiones periódicas para mantener tu camión en óptimas condiciones.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALERÍA con imágenes clicables -->
+    <section id="galeria" class="container my-5">
+        <h2 class="text-center mb-4">Galería del Taller</h2>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="image-card" onclick="mostrarVideo()">
+                    <img src="/imagenes/cambioAceite.png" alt="Cambio de aceite">
+                    <div class="overlay">
+                        <p>Equipo realizando cambio completo de aceite y filtros.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="image-card" onclick="mostrarVideo()">
+                    <img src="/imagenes/cambioNeumaticos.png" alt="Cambio de neumáticos">
+                    <div class="overlay">
+                        <p>Reemplazo y balanceo de neumáticos por personal especializado.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="image-card" onclick="mostrarVideo()">
+                    <img src="/imagenes/cambioPiezas.png" alt="Sustitución de piezas">
+                    <div class="overlay">
+                        <p>Instalación de piezas nuevas tras diagnóstico detallado.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="image-card" onclick="mostrarVideo()">
+                    <img src="/imagenes/cambioFrenos.png" alt="Cambio de sistema de frenos">
+                    <div class="overlay">
+                        <p>Reemplazo y ajuste completo del sistema de frenos para máxima seguridad.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- VIDEO MODAL -->
+    <div class="video-galeria" id="videoModal">
+        <span class="close-btn" onclick="cerrarVideo()">&times;</span>
+        <iframe id="videoIframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        function mostrarVideo() {
+            const modal = document.getElementById('videoModal');
+            const iframe = document.getElementById('videoIframe');
+            iframe.src = 'https://www.youtube.com/embed/YOUTUBE_VIDEO_ID?autoplay=1&mute=1';
+            modal.style.display = 'flex';
+        }
+
+        function cerrarVideo() {
+            const modal = document.getElementById('videoModal');
+            const iframe = document.getElementById('videoIframe');
+            iframe.src = '';
+            modal.style.display = 'none';
+        }
+    </script>
+
+
+    <!-- EQUIPO -->
+    <section id="equipo" class="container my-5">
+        <h2 class="text-center mb-4">Nuestro Equipo</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="image-card">
+                    <img src="/imagenes/jefeTaller.png" alt="Juan Pérez">
+                    <div class="overlay">
+                        <p><strong>Juan Pérez</strong><br>Jefe de Taller con 10+ años en gestión de reparaciones.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="image-card">
+                    <img src="/imagenes/recepcionista.png" alt="Ana García">
+                    <div class="overlay">
+                        <p><strong>Ana García</strong><br>Experta en atención al cliente y coordinación de órdenes.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="image-card">
+                    <img src="/imagenes/mecanico.png" alt="Luis Martínez">
+                    <div class="overlay">
+                        <p><strong>Luis Martínez</strong><br>Técnico superior en mecánica y diagnóstico de averías.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN DE CONTACTO + FORMULARIO -->
+<!-- CONTACTO + FORMULARIO ORGANIZADO -->
+    <section id="contacto" class="text-center">
+        <div class="container">
+            <h2 class="mb-4">Contacto</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="embed-responsive embed-responsive-16by9 mb-3">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13319.370419872768!2d-3.136338702007198!3d39.40112256451634!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd69ace2c436712f%3A0x317e9f2610fd6539!2sCojali%20S.L.!5e0!3m2!1ses!2ses!4v1745044874511!5m2!1ses!2ses" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                    <p><strong>Teléfono:</strong> +34 635 587 678</p>
+                    <p><strong>Email:</strong> info@cojali.com</p>
+                    <p><strong>Dirección:</strong> Avenida de la Industria 1, 13610 Campo de Criptana, España</p>
+                </div>
+                <div class="col-md-6 text-left">
+                    <form id="contactoForm">
+                        <div class="form-group">
+                            <label for="nombre">Nombre y Apellidos</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="telefono">Teléfono</label>
+                            <input type="text" class="form-control" id="telefono" name="telefono" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="mensaje">Descripción</label>
+                            <textarea class="form-control" id="mensaje" name="mensaje" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" id="btnEnviar" class="btn btn-primary">Enviar</button>
+                    </form>
+                    <div id="mensajeExito" class="alert alert-success mt-3" style="display: none;">
+                        ¡Mensaje enviado correctamente!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- SCRIPT para envío AJAX -->
+<script>
+document.getElementById('contactoForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const btn = document.getElementById('btnEnviar');
+    const mensaje = document.getElementById('mensajeExito');
+
+    const datos = {
+        nombre: form.nombre.value,
+        email: form.email.value,
+        telefono: form.telefono.value,
+        mensaje: form.mensaje.value
+    };
+
+    fetch('/enviar-correo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(datos)
+    })
+    .then(response => {
+        if (response.ok) {
+            btn.classList.remove('btn-primary');
+            btn.classList.add('btn-success');
+            btn.innerText = 'Enviado';
+            btn.disabled = true;
+            mensaje.style.display = 'block';
+            form.reset();
+        } else {
+            alert("Hubo un problema al enviar el mensaje.");
+        }
+    })
+    .catch(() => {
+        alert("Error de conexión.");
+    });
+});
+</script>
+
+
+    <!-- FOOTER -->
+    <footer class="bg-dark text-white pt-4 pb-2">
+  <div class="container">
+    <div class="row">
+      <!-- Últimas valoraciones -->
+      <div class="col-md-6 text-center text-md-left mb-3 mb-md-0">
+        <h5 class="mb-3">Últimas valoraciones</h5>
+        <ul class="list-unstyled">
+          <li th:each="valoracion : ${ultimasValoraciones}">
+            <span th:each="i : ${#numbers.sequence(1, valoracion.puntuacion)}">⭐</span>
+            - <span th:text="${valoracion.mensaje}">Comentario</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Media de puntuación -->
+      <div class="col-md-6 text-center text-md-right d-flex align-items-center justify-content-center justify-content-md-end">
+        <p class="mb-0 h5">⭐ Puntuación media del taller: <span th:text="${mediaPuntuacion}">0.0</span></p>
+      </div>
+    </div>
+
+    <!-- Línea de separación -->
+    <hr class="bg-light my-3">
+
+    <!-- Copyright centrado -->
+    <div class="row">
+      <div class="col text-center">
+        <p class="mb-0">&copy; 2025 Taller de Camiones Cojali. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+
+
+    <!-- SCRIPTS BOOTSTRAP -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- Ocultar preloader -->
+    <script>
+        window.addEventListener("load", () => {
+            setTimeout(() => {
+                const pre = document.getElementById("preloader");
+                pre.style.opacity = "0";
+                setTimeout(() => pre.style.display = "none", 500);
+            }, 3000);
+        });
+    </script>
+    <script>
+  // Al clicar el logo, scrollea arriba suavemente
+  document.getElementById('logo-scroll-top')
+    .addEventListener('click', function(e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+</script>
+    
+</body>
+</html>

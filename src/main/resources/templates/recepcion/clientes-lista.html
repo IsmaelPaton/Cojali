@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Clientes</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <h2 class="mb-4">📋 Lista de Clientes</h2>
+
+    <!-- Alerta de éxito -->
+    <div th:if="${exito}" class="alert alert-success text-center">
+        <span th:text="${exito}"></span>
+    </div>
+
+    <!-- Alerta si no se puede eliminar -->
+    <div th:if="${noSePuedeEliminar}" class="alert alert-danger text-center">
+        ❌ No se puede eliminar el cliente porque tiene reservas activas. Finalícelas antes de eliminar.
+    </div>
+
+
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cliente : ${clientes}">
+            <td th:text="${cliente.id}"></td>
+            <td th:text="${cliente.nombre}"></td>
+            <td th:text="${cliente.apellido}"></td>
+            <td th:text="${cliente.email}"></td>
+            <td th:text="${cliente.telefono}"></td>
+            <td>
+                <a th:href="@{'/recepcion/editar-cliente/' + ${cliente.id}}" class="btn btn-warning btn-sm">✏️ Editar</a>
+
+                <form th:action="@{/recepcion/eliminar-cliente}" method="post" style="display:inline;">
+    <input type="hidden" name="id" th:value="${cliente.id}" />
+    <button type="submit" class="btn btn-danger btn-sm">🗑 Eliminar</button>
+</form>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/recepcion/inicio}" class="btn btn-secondary mt-3">⬅ Volver al panel</a>
+</div>
+
+</body>
+</html>

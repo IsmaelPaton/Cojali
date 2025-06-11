@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Facturas - Taller Cojali</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/estilos.css">
+    <style>
+        body { background-color: #f5f5f5; }
+        .table th, .table td { vertical-align: middle; }
+        .btn-volver { margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Mis Facturas</h2>
+
+    <div th:if="${facturas.isEmpty()}">
+        <div class="alert alert-info text-center">No tienes facturas registradas aún.</div>
+    </div>
+
+    <div th:if="${!facturas.isEmpty()}">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Descripción</th>
+                    <th>Fecha Emisión</th>
+                    <th>Total (€)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="factura : ${facturas}">
+                    <td th:text="${factura.id}">1</td>
+                    <td th:text="${factura.descripcion}">Revisión general</td>
+                    <td th:text="${#dates.format(factura.fechaEmision, 'dd/MM/yyyy HH:mm')}">15/05/2025</td>
+                    <td th:text="${factura.total}">250.00</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center">
+        <a href="/inicio-cliente" class="btn btn-secondary btn-volver">Volver a la zona cliente</a>
+    </div>
+</div>
+
+</body>
+</html>

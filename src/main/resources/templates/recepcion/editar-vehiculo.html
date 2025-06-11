@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Vehículo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <h2 class="mb-4">✏️ Editar Vehículo</h2>
+
+    <form th:action="@{/recepcion/actualizar-vehiculo}" method="post">
+        <input type="hidden" th:field="*{vehiculo.id}" name="id" />
+
+        <div class="form-group">
+            <label>Marca:</label>
+            <input type="text" class="form-control" th:field="*{vehiculo.marca}" name="marca" required>
+        </div>
+        <div class="form-group">
+            <label>Modelo:</label>
+            <input type="text" class="form-control" th:field="*{vehiculo.modelo}" name="modelo" required>
+        </div>
+        <div class="form-group">
+            <label>Matrícula:</label>
+            <input type="text" class="form-control" th:field="*{vehiculo.matricula}" name="matricula" required>
+        </div>
+        <div class="form-group">
+            <label>Año:</label>
+            <input type="number" class="form-control" th:field="*{vehiculo.anio}" name="anio" required>
+        </div>
+
+        <button type="submit" class="btn btn-success">💾 Guardar Cambios</button>
+        <a th:href="@{/recepcion/vehiculos}" class="btn btn-secondary ml-2">⬅ Volver</a>
+    </form>
+</div>
+
+</body>
+</html>

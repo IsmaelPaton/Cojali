@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio - Jefe de Taller</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+    <h1>Bienvenido Jefe de Taller</h1>
+    <ul>
+        <li><a th:href="@{/empleados/listar}">Gestionar empleados</a></li>
+        <li><a th:href="@{/admin/asignar-reservas}">Asignar reservas a mecánicos</a></li>
+        <li><a th:href="@{/admin/estadisticas}">Ver estadísticas y valoraciones</a></li>
+        <li><a th:href="@{/admin/facturas}">Ver todas las facturas</a></li>
+    </ul>
+</body>
+</html>

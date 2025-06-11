@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Crear Reserva</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <h2 class="mb-4">Crear nueva reserva para un cliente</h2>
+
+    <!-- ✅ Mensajes de error o éxito -->
+    <div th:if="${error}" class="alert alert-danger text-center" role="alert" th:text="${error}"></div>
+    <div th:if="${exito}" class="alert alert-success text-center" role="alert" th:text="${exito}"></div>
+
+    <form th:action="@{/recepcion/guardar-reserva}" method="post">
+        <div class="form-group">
+            <label>Cliente:</label>
+            <select name="clienteId" class="form-control" required>
+                <option value="">Seleccione un cliente</option>
+                <option th:each="cliente : ${clientes}"
+                        th:value="${cliente.id}"
+                        th:text="${cliente.nombre + ' ' + cliente.apellido}">
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Fecha:</label>
+            <input type="date" id="fecha" name="fecha" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label>Hora:</label>
+            <select id="hora" name="hora" class="form-control" required>
+                <option value="">Seleccione una hora</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Servicio:</label>
+            <select name="servicio" class="form-control" required>
+                <option value="">Seleccione un servicio</option>
+                <option value="Cambio de aceite">Cambio de aceite</option>
+                <option value="Revisión general">Revisión general</option>
+                <option value="ITV">Preparación ITV</option>
+                <option value="Frenos y suspensión">Frenos y suspensión</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar reserva</button>
+        <a th:href="@{/recepcion/inicio}" class="btn btn-secondary ml-2">⬅ Volver</a>
+    </form>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const fechaInput = document.getElementById("fecha");
+    const horaSelect = document.getElementById("hora");
+
+    const horasDisponibles = [
+        "08:30", "09:30", "10:30", "11:30", "12:30",
+        "16:00", "17:00", "18:00", "19:00"
+    ];
+
+    fechaInput.addEventListener("change", function () {
+        const fecha = fechaInput.value;
+        const fechaObj = new Date(fecha);
+        const dia = fechaObj.getDay();
+
+        // No mostrar alerta, simplemente no permitir selección
+        if (dia === 6 || dia === 0) {
+            horaSelect.innerHTML = "";
+            const opt = document.createElement("option");
+            opt.textContent = "El taller está cerrado fines de semana";
+            opt.disabled = true;
+            horaSelect.appendChild(opt);
+            return;
+        }
+
+        fetch(`/recepcion/horas-ocupadas?fecha=${fecha}`)
+            .then(res => res.json())
+            .then(data => {
+                horaSelect.innerHTML = "";
+
+                if (data.length >= 5) {
+                    const opt = document.createElement("option");
+                    opt.textContent = "Día completo, elige otra fecha";
+                    opt.disabled = true;
+                    horaSelect.appendChild(opt);
+                    return;
+                }
+
+                horasDisponibles.forEach(hora => {
+                    if (!data.includes(hora)) {
+                        const opt = document.createElement("option");
+                        opt.value = hora;
+                        opt.textContent = hora;
+                        horaSelect.appendChild(opt);
+                    }
+                });
+
+                if (horaSelect.options.length === 0) {
+                    const opt = document.createElement("option");
+                    opt.textContent = "Sin horas disponibles";
+                    opt.disabled = true;
+                    horaSelect.appendChild(opt);
+                }
+            });
+    });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Recepcionista</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <h2 class="mb-4">Reservas Clientes</h2>
+
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>Cliente</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Servicio</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="reserva : ${reservas}">
+            <td th:text="${reserva.cliente.nombre + ' ' + reserva.cliente.apellido}">Nombre Cliente</td>
+            <td th:text="${reserva.fecha}">2025-06-01</td>
+            <td th:text="${#temporals.format(reserva.hora, 'HH:mm')}">10:00</td>
+            <td th:text="${reserva.servicio}">Cambio aceite</td>
+            <td th:text="${reserva.estado}">Activa</td>
+            <td>
+                <!-- Botón COMPLETAR -->
+                <form th:action="@{/recepcion/completar-reserva}" method="post" style="display:inline;">
+                    <input type="hidden" name="id" th:value="${reserva.id}" />
+                    <button type="submit" class="btn btn-success btn-sm">Completar</button>
+                </form>
+
+                <!-- Botón CANCELAR -->
+                <form th:action="@{/recepcion/cancelar-reserva}" method="post" style="display:inline;">
+                    <input type="hidden" name="id" th:value="${reserva.id}" />
+                    <button type="submit" class="btn btn-danger btn-sm">Cancelar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="mt-4 d-flex flex-wrap justify-content-between gap-2">
+    <a th:href="@{/recepcion/registrar-cliente}" class="btn btn-outline-primary">➕ Registrar nuevo cliente</a>
+    <a th:href="@{/recepcion/crear-reserva}" class="btn btn-outline-primary">🗓 Crear nueva reserva</a>
+    <a th:href="@{/recepcion/clientes}" class="btn btn-outline-primary">📋 Ver todos los clientes</a>
+    <a th:href="@{/recepcion/vehiculos}" class="btn btn-outline-primary">🚗 Ver todos los vehículos</a>
+    <a th:href="@{/recepcion/ordenes}" class="btn btn-outline-danger">🛠 Ver órdenes de trabajo</a>
+</div>
+
+</div>
+</body>
+</html>
