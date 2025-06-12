@@ -10,7 +10,8 @@ FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-COPY --from=build /app/target/Cojali-0.0.1-SNAPSHOT.jar.jar app.jar
+COPY --from=build /app/target/Cojali-0.0.1-SNAPSHOT.jar app.jar
+
 
 ENV PORT 8080
 
