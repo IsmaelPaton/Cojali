@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Inicio - Jefe de Taller</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/estilos.css"> <!-- si tienes un CSS personalizado -->
+    <link rel="stylesheet" href="/css/estilos.css">
 </head>
 <body>
 <div class="container mt-5">
@@ -16,7 +16,7 @@
             <p class="lead text-center">Bienvenido al sistema de gestión del taller. ¿Qué desea hacer hoy?</p>
 
             <div class="list-group">
-                <a th:href="@{/empleados/listar}" class="list-group-item list-group-item-action">
+                <a th:href="@{/admin/lista-empleados}" class="list-group-item list-group-item-action">
                     👥 Gestionar empleados
                 </a>
                 <a th:href="@{/admin/asignar-reservas}" class="list-group-item list-group-item-action">
