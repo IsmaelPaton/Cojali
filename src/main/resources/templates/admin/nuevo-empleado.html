@@ -8,7 +8,13 @@
 <body>
 <div class="container mt-4">
     <h2 class="mb-4">Nuevo Empleado</h2>
-    <form th:action="@{/empleados/admin/nuevo}" th:object="${empleado}" method="post">
+
+    <!-- Mensaje de error si se intenta asignar el rol de admin -->
+    <div th:if="${param.error}" class="alert alert-danger">
+        No tienes permiso para asignar el rol de administrador.
+    </div>
+
+    <form th:action="@{/admin/guardar-empleado}" th:object="${empleado}" method="post">
         <div class="form-group">
             <label>Nombre</label>
             <input type="text" th:field="*{nombre}" class="form-control" required>
@@ -25,13 +31,12 @@
             <label>Rol</label>
             <select th:field="*{rol}" class="form-control" required>
                 <option value="">Selecciona un rol</option>
-                <option value="admin">Admin</option>
                 <option value="recepcionista">Recepcionista</option>
                 <option value="mecanico">Mecánico</option>
             </select>
         </div>
         <button type="submit" class="btn btn-success">Guardar</button>
-        <a th:href="@{/empleados/admin/empleados}" class="btn btn-secondary">Cancelar</a>
+        <a th:href="@{/admin/lista-empleados}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
 </body>
