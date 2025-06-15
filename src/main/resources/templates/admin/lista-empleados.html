@@ -7,37 +7,41 @@
 </head>
 <body>
 <div class="container mt-4">
-    <h2 class="mb-4">Lista de Empleados</h2>
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+            <h2 class="mb-0 text-center">Lista de Empleados</h2>
+        </div>
+        <div class="card-body">
+            <div class="mb-3 d-flex justify-content-between">
+                <a th:href="@{/admin/nuevo-empleado}" class="btn btn-primary">➕ Crear nuevo empleado</a>
+                <a th:href="@{/admin/inicio}" class="btn btn-secondary">⬅️ Volver al panel</a>
+            </div>
 
-    <a th:href="@{/admin/nuevo-empleado}" class="btn btn-primary mb-3">Crear nuevo empleado</a>
-
-    <table class="table table-bordered">
-        <thead class="thead-dark">
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Email</th>
-                <th>Rol</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="empleado : ${empleados}">
-                <td th:text="${empleado.id}">1</td>
-                <td th:text="${empleado.nombre}">Nombre</td>
-                <td th:text="${empleado.email}">correo@example.com</td>
-                <td th:text="${empleado.rol}">rol</td>
-                <td>
-                    <a th:href="@{'/admin/editar-empleado/' + ${empleado.id}}" class="btn btn-warning btn-sm">Editar</a>
-                    <a th:href="@{'/admin/eliminar-empleado/' + ${empleado.id}}" 
-                       class="btn btn-danger btn-sm" 
-                       onclick="return confirm('¿Estás seguro de que quieres eliminar este empleado?');">
-                        Eliminar
-                    </a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark text-center">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="empleado : ${empleados}" class="text-center">
+                        <td th:text="${empleado.id}">1</td>
+                        <td th:text="${empleado.nombre}">Nombre</td>
+                        <td th:text="${empleado.email}">correo@example.com</td>
+                        <td th:text="${empleado.rol}">rol</td>
+                        <td>
+                            <a th:href="@{'/admin/editar-empleado/' + ${empleado.id}}" class="btn btn-warning btn-sm">Editar</a>
+                            <a th:href="@{'/admin/eliminar-empleado/' + ${empleado.id}}" class="btn btn-danger btn-sm">Eliminar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 </body>
 </html>
